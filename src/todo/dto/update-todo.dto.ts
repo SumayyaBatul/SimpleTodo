@@ -4,10 +4,12 @@ import { IsOptional } from 'class-validator';
 
 export class UpdateTodoDto extends PartialType(CreateTodoDto) {
     @IsOptional()
-    status: TodoStatus
+    status : TodoStatus
 }
 
 enum TodoStatus {
-    ACTIVE ='ACTIVE',
+    ACTIVE = 'ACTIVE',
     DONE = 'DONE'
 }
+
+

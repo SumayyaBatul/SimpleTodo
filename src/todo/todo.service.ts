@@ -3,62 +3,61 @@ import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { DatabaseService } from 'src/database/database.service';
 import { Prisma } from '@prisma/client';
-import { identity } from 'rxjs';
 
 @Injectable()
 export class TodoService {
-  constructor(private readonly databaseService: DatabaseService){
+  constructor(private readonly databaseService: DatabaseService){}
 
-  }
   async create(createTodoDto: CreateTodoDto, email: string){
     try{
       const user = await this.databaseService.user.findUnique({ where: { email } });
-      if (user!){
+      if (!user) {
         throw new Error('User not found');
       }
-      let data: Prisma.TodoCreateInput ={
+      let data: Prisma.TodoCreateInput = {
         description : createTodoDto.description,
         task: createTodoDto.task,
         status : 'ACTIVE',
-        user : {
-          connect: {email: user.email},
+        user: {
+          connect: { email: user.email },
         },
       }
-      return await this.databaseService.todo.create({data});
+      return  this.databaseService.todo.create({data});
     }catch(err){
       return err
     }
+    
   }
 
-  async findAll(userEmail: string) {
-    return this.databaseService.todo.findMany({
+  async findAll( userEmail: string) {
+    return  this.databaseService.todo.findMany({
       where:{
         userEmail: userEmail
-      }
+      },
     });
   }
 
   async findOne(id: number) {
     return this.databaseService.todo.findFirst({
       where:{
-      id: id
-    }})
-    
+        id: id
+      }
+    })
   }
 
   async update(id: number, updateTodoDto: UpdateTodoDto) {
     return this.databaseService.todo.update({
       where:{
-        id: id
+        id:id
       },
-      data : updateTodoDto
-    }) ;
+      data: updateTodoDto
+    });
   }
 
   async remove(id: number) {
     return this.databaseService.todo.delete({
       where:{
-        id: id 
+        id: id
       }
     });
   }

@@ -1,12 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsString, Length } from "class-validator";
 
-export class RegisterUserDto{
+export class RegisterUserDto {
     @ApiProperty()
     @IsString()
     @Length(2,20)
     name: string
-
+    
     @ApiProperty()
     @IsString()
     @Length(2,20)
@@ -14,7 +14,5 @@ export class RegisterUserDto{
 
     @ApiProperty()
     @IsEmail()
-    @Length(2,20)
     email: string
-
 }
